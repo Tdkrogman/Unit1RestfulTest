@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>RESTful JSON-PHP Web Service Client</title>
+ </head>
+<body>
+<h2>
+Please enter flight number to search for in Database Emulator
+
+<p>
+		<form id="target" action="" method="post">
+			Flight Number: <input type="text" id="flight" name ="flight">&nbsp
+			<input type="submit" value="Submit">
+		</form>
+	</p>
+	<br />
+
+-----------------------------------------------------------------------------	
+	<br /><br />
+
+Airline Flight information returned from Database Emulator web service:
+	<p>
+		Airline Name: <span id="airlineName"></span>
+		<br />
+		Flight Number: <span id="flightNumber"></span>
+		<br />
+		Seat Number: <span id="seatNumber"></span>
+		<br />
+		Ticket Price: <span id="ticketPrice"></span>
+	</p>
+	 
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+
+<script>
+
+$('#target').submit(function(event) {
+
+//alert("inside JS function");
+
+	event.preventDefault();
+	
+	var aFlightNumber = $('#flight').val();
+					
+	$.ajax({
+		type: 'POST',
+		url: '../ServiceProvider/KroT_AirlineFlight_API.php',
+		data: 'flightNumber=' + aFlightNumber, 
+		dataType: 'json',
+		encode: true
+	})
+	.done(function(data) {
+		$('#airlineName').text(data.airlineName);
+		$('#flightNumber').text(data.flightNumber);
+		$('#seatNumber').text(data.seatNumber);
+		$('#ticketPrice').text(data.ticketPrice);
+	})
+	.fail(function() {
+		$('#result').text('An error occurred. Please contact your Web Service Administrator.');
+	});
+
+	});
+
+</script>
+</body>
+</html>
